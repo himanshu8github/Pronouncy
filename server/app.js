@@ -28,6 +28,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api', historyRoutes);
 app.use("/api/progress", progressRoute);
 
+app.get("/", (req, res) => {
+  res.send("Backend running");
+});
+
 
 app.use(errorHandler);
 
