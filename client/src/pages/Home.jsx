@@ -1,164 +1,102 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { gsap } from "gsap";
 import { FaMicrophone, FaWaveSquare, FaUser } from "react-icons/fa";
 
 const Home = () => {
-  const titleRef = useRef(null);
-  const subtitleRef = useRef(null);
-  const footerRef = useRef(null);
-  const navTitleRef = useRef(null);
-  const cardRefs = useRef([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    gsap.from(titleRef.current, {
-      y: -60,
-      opacity: 100,
-      duration: 1.2,
-      ease: "power3.out",
-    });
-
-    gsap.from(subtitleRef.current, {
-      y: 30,
-      opacity: 80,
-      duration: 1,
-      delay: 0.8,
-    });
-
-    gsap.from(navTitleRef.current, {
-      scale: 0.8,
-      opacity: 100,
-      duration: 0.8,
-      ease: "back.out(1.7)",
-    });
-
-    cardRefs.current.forEach((card, index) => {
-      if (card) {
-        gsap.from(card, {
-          y: 80,
-          opacity: 80,
-          duration: 1.5,
-          delay: 0.5 + index * 0.3,
-          ease: "power3.out",
-        });
-      }
-    });
-
-    gsap.from(footerRef.current, {
-      opacity: 80,
-      y: 30,
-      delay: 2.5,
-      duration: 1,
-      ease: "power2.out",
-    });
-  }, []);
-
   return (
-    <div className="flex flex-col min-h-screen font-sans">
+    <div className="flex flex-col min-h-screen font-sans bg-gradient-to-br from-[#f3e5f5] via-[#f3d9fa] to-[#e0bbff]">
       {/* Navbar */}
       <nav className="flex items-center justify-between px-8 py-4 bg-[#7b2cbf] shadow-lg">
-        <h1
-          ref={navTitleRef}
-          className="text-3xl font-extrabold text-white tracking-wide"
-        >
-          Pronouncy
-        </h1>
+        <h1 className="text-3xl font-extrabold text-white tracking-wide">Pronouncy</h1>
         <div className="space-x-4">
           <button
             onClick={() => navigate("/login")}
-            className="bg-[#c77dff] hover:bg-[#9d4edd] text-white px-4 py-2 rounded transition duration-300"
+            className="bg-[#c77dff] text-white px-4 py-2 rounded shadow hover:bg-[#9d4edd] transition"
           >
             Login
           </button>
           <button
             onClick={() => navigate("/signup")}
-            className="bg-white text-[#7b2cbf] hover:bg-gray-100 px-4 py-2 rounded transition duration-300"
+            className="bg-[#c77dff] text-white px-4 py-2 rounded shadow hover:bg-[#9d4edd] transition"
           >
             Signup
           </button>
         </div>
       </nav>
 
-      {/* Main Content */}
-      <main className="flex-1 bg-gradient-to-br from-[#f3e5f5] via-[#f3d9fa] to-[#e0bbff] p-6 flex flex-col items-center">
-        <h2
-          className="text-5xl md:text-6xl font-extrabold text-center text-[#5a189a] mt-12 mb-4"
-          ref={titleRef}
-        >
+      {/* Hero */}
+      <main className="flex-1 p-6 flex flex-col items-center text-center mt-16 mb-12">
+        <h2 className="text-5xl md:text-6xl font-extrabold text-[#5a189a] mb-4 animate-fade-in">
           Pronouncy
         </h2>
-        <p
-          ref={subtitleRef}
-          className="text-lg md:text-xl text-center text-[#8d0801] mb-8"
-        >
+        <p className="text-lg md:text-xl text-[#8d0801] mb-10 max-w-2xl animate-slide-up">
           Master Pronunciation with Real-Time Visual Feedback
         </p>
 
         {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full animate-fade-in-slow">
           <FeatureCard
-            innerRef={(el) => (cardRefs.current[0] = el)}
             icon={<FaMicrophone size={32} />}
             title="Record Your Voice"
             description="Use your mic to practice pronunciation and hear how you sound."
           />
           <FeatureCard
-            innerRef={(el) => (cardRefs.current[1] = el)}
             icon={<FaWaveSquare size={32} />}
             title="Visual Waveform"
             description="See a real-time waveform of your voice for better clarity."
           />
           <FeatureCard
-            innerRef={(el) => (cardRefs.current[2] = el)}
             icon={<FaUser size={32} />}
             title="Track Progress"
-            description="(Optional) Login to save your speech history and monitor growth."
+            description="Login to save your speech history and monitor growth."
           />
         </div>
       </main>
 
       {/* Footer */}
-      <footer
-        ref={footerRef}
-        className="bg-[#5a189a] text-white text-center py-6 mt-auto"
-      >
-        <p className="mb-1">© 2025 Pronouncy. All rights reserved.</p>
-        <div className="flex justify-center space-x-6 text-sm mb-2">
+      <footer className="bg-[#5a189a] text-white text-center py-6 mt-auto text-sm">
+        <p className="mb-2">© 2025 Pronouncy. All rights reserved.</p>
+        <div className="flex justify-center space-x-6 mb-2">
           <a
-            href="https://twitter.com/yourhandle"
-            className="hover:underline"
+            href="https://x.com/himanshuu_5?t=OCSvQMQ7C8Oq9VrlPiWRdQ&s=08"
             target="_blank"
             rel="noreferrer"
+            className="hover:underline"
           >
             Twitter
+          </a>
+          <a
+            href="https://www.linkedin.com/in/himanshu-choudhary-1a19ba255/"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:underline"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://github.com/himanshu8github"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:underline"
+          >
+            GitHub
           </a>
           <a href="mailto:himanshukakran8@gmail.com" className="hover:underline">
             Email
           </a>
-          <a
-            href="https://github.com/himanshu8"
-            className="hover:underline"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub
-          </a>
         </div>
-        <p className="text-xs animate-pulse text-gray-200">
-          Built by Himanshu Choudhary · React · Tailwind · GSAP
+        <p className="text-xs text-gray-300 animate-pulse">
+          Built by Himanshu Choudhary · React · Tailwind CSS
         </p>
       </footer>
     </div>
   );
 };
 
-// FeatureCard using custom innerRef prop (not default ref)
-const FeatureCard = ({ icon, title, description, innerRef }) => (
-  <div
-    ref={innerRef}
-    className="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center text-center transition-all hover:scale-105 hover:shadow-2xl duration-300"
-  >
+const FeatureCard = ({ icon, title, description }) => (
+  <div className="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center text-center transform hover:scale-105 transition duration-300">
     <div className="text-[#7b2cbf] mb-4">{icon}</div>
     <h3 className="text-xl font-bold mb-2 text-[#5a189a]">{title}</h3>
     <p className="text-gray-700">{description}</p>
