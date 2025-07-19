@@ -1,52 +1,77 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../services/auth";
+import { loginUser } from "../services/auth";
+import useAuthStore from "../store/useAuthStore";
 
 const Login = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const { login } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Enter a valid email";
+    }
+    if (!password || password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validate()) return;
+
     try {
-      const res = await axios.post("/auth/login", form);
-      localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
+      const data = await loginUser({ email, password });
+      login(data.user); 
+      localStorage.setItem("token", data.token); 
+      navigate("/dashboard"); 
     } catch (err) {
-      alert("Invalid credentials");
+      alert(err.response?.data?.error || "Login failed");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex items-center justify-center min-h-screen bg-blue-100">
       <form
-        onSubmit={handleLogin}
-        className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm"
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded shadow-md w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-        <input
-          type="email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Email"
-          className="w-full p-2 mb-3 border border-gray-300 rounded"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          value={form.password}
-          onChange={handleChange}
-          placeholder="Password"
-          className="w-full p-2 mb-3 border border-gray-300 rounded"
-          required
-        />
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-medium">Email</label>
+          <input
+            type="email"
+            className="w-full border p-2 rounded"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-medium">Password</label>
+          <input
+            type="password"
+            className="w-full border p-2 rounded"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          )}
+        </div>
+
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
