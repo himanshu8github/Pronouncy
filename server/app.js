@@ -11,11 +11,16 @@ dotenv.config();
 
 const app = express();
 
-
 app.use(cors({
-  origin:"https://pronouncy-frontend.onrender.com",
-  credentials: true, 
+  origin: [
+    "http://localhost:5173",               
+    "https://pronouncy-frontend.onrender.com"
+  ],
+  credentials: true,
 }));
+
+
+
 app.use(express.json());
 
 
